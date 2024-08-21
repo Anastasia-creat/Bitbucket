@@ -20,11 +20,10 @@ namespace LinkShortener.Controllers
             _userManager = userManager;
         }
 
-        // GET: /Link/Index
         // Отображение списка ссылок пользователя
         public async Task<IActionResult> Index()
         {
-            // Получаем текущего пользователя
+            
             var user = await _userManager.GetUserAsync(User);
 
             // Извлекаем список ссылок, связанных с текущим пользователем
@@ -35,7 +34,7 @@ namespace LinkShortener.Controllers
             return View(links);
         }
 
-        // POST: /Link/Shorten
+
         // Сокращение ссылки
         [HttpPost]
         public async Task<IActionResult> Shorten(string originalUrl)
@@ -46,7 +45,7 @@ namespace LinkShortener.Controllers
                 return RedirectToAction("Index");
             }
 
-            var user = await _userManager.GetUserAsync(User); // Получаем текущего пользователя
+            var user = await _userManager.GetUserAsync(User); 
 
             // Генерируем уникальный код для ссылки
             var shortCode = GenerateUniqueCode();
@@ -57,7 +56,7 @@ namespace LinkShortener.Controllers
                 OriginalUrl = originalUrl,
                 ShortCode = shortCode,
                 CreatedAt = DateTime.Now,
-                UserId = user.Id // Привязываем ссылку к текущему пользователю
+                UserId = user.Id 
             };
 
             // Сохраняем ссылку в базе данных
@@ -67,10 +66,10 @@ namespace LinkShortener.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: /{code}
+
         // Перенаправление по короткой ссылке
         [HttpGet("/{code}")]
-        [AllowAnonymous] // Разрешаем доступ к перенаправлению всем пользователям
+        [AllowAnonymous] 
         public async Task<IActionResult> RedirectToOriginal(string code)
         {
             if (string.IsNullOrEmpty(code))

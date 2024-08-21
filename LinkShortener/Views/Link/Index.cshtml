@@ -1,37 +1,100 @@
 ﻿@model IEnumerable<LinkShortener.Models.Link>
 
 @{
-    ViewData["Title"] = "My Links";
+    ViewData["Title"] = "URL Shortener";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<form asp-action="Shorten" method="post">
-    <div class="form-group">
-        <label for="originalUrl">Original URL</label>
-        <input type="text" name="originalUrl" id="originalUrl" class="form-control" placeholder="Enter URL" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Shorten</button>
-</form>
-
-<table class="table mt-4">
-    <thead>
-        <tr>
-            <th>Date Created</th>
-            <th>Original URL</th>
-            <th>Short URL</th>
-            <th>Clicks</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var link in Model)
-        {
-            <tr>
-                <td>@link.CreatedAt.ToShortDateString()</td>
-                <td><a href="@link.OriginalUrl" target="_blank">@link.OriginalUrl</a></td>
-                <td><a href="/@link.ShortCode" target="_blank">/@link.ShortCode</a></td>
-                <td>@link.ClickCount</td>
-            </tr>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  
+    <style>
+        body {
+            background: #f5f5f5;
         }
-    </tbody>
-</table>
+        .card-header {
+            background: #007bff;
+            color: white;
+        }
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .card-body {
+            background: #ffffff;
+            padding: 2rem;
+        }
+        .btn-primary {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-primary:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        .table thead th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4 text-primary">URL Shortener <i class="fas fa-link"></i></h1>
+
+        <div class="card mb-4 shadow-lg">
+            <div class="card-header">
+                <h5 class="mb-0">Shorten Your Links <i class="fas fa-link"></i></h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Shorten" method="post">
+                    <div class="mb-3">
+                        <label for="originalUrl" class="form-label">Original URL</label>
+                        <input type="url" name="originalUrl" id="originalUrl" class="form-control" placeholder="Enter original URL" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Shorten <i class="fas fa-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <h5 class="mb-0">Your Shortened Links <i class="fas fa-list"></i></h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date Created</th>
+                            <th>Original URL</th>
+                            <th>Short URL</th>
+                            <th>All Clicks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var link in Model)
+                        {
+                            <tr>
+                                <td>@link.CreatedAt.ToShortDateString()</td>
+                                <td><a href="@link.OriginalUrl" target="_blank" class="text-decoration-none" style="color: #007bff;">@link.OriginalUrl</a></td>
+                                <td><a href="/@link.ShortCode" target="_blank" class="text-decoration-none" style="color: #28a745;">/@link.ShortCode</a></td>
+                                <td>@link.ClickCount</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
