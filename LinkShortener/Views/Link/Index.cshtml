@@ -1,0 +1,37 @@
+﻿@model IEnumerable<LinkShortener.Models.Link>
+
+@{
+    ViewData["Title"] = "My Links";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Shorten" method="post">
+    <div class="form-group">
+        <label for="originalUrl">Original URL</label>
+        <input type="text" name="originalUrl" id="originalUrl" class="form-control" placeholder="Enter URL" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Shorten</button>
+</form>
+
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th>Date Created</th>
+            <th>Original URL</th>
+            <th>Short URL</th>
+            <th>Clicks</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var link in Model)
+        {
+            <tr>
+                <td>@link.CreatedAt.ToShortDateString()</td>
+                <td><a href="@link.OriginalUrl" target="_blank">@link.OriginalUrl</a></td>
+                <td><a href="/@link.ShortCode" target="_blank">/@link.ShortCode</a></td>
+                <td>@link.ClickCount</td>
+            </tr>
+        }
+    </tbody>
+</table>
